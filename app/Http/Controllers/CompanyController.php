@@ -24,7 +24,10 @@ class CompanyController extends Controller
     public function index()
     {
         //
-        dd(Company::all());
+
+        // $companies = Company::all();
+        $companies = Company::paginate(10);
+        return view('companies.index', compact('companies'));
 
     }
 
@@ -48,7 +51,7 @@ class CompanyController extends Controller
      */
     public function store(Request  $request)
     {
-        
+
         $inputs = $request->only(['name', 'email', 'website']);
         $image = Input::file('logo');
         $inputs['logo'] = time().'.'.$image->getClientOriginalExtension();
@@ -64,9 +67,14 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function show(Company $company)
+    public function show($id)
     {
-        return redirect('/companies');
+        if(!Company::find($id)){
+            abort(404);
+        };
+        $companies = Company::find($id);
+        // dd($companies);
+        return view('companies.show', compact('companies'));
     }
 
     /**
@@ -75,9 +83,11 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
+    public function edit($id)
     {
-        //
+        // dd($company);
+        $company = Company::find($id);
+        return view('companies.edit', compact(['company']));
     }
 
     /**
@@ -87,9 +97,11 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
-        //
+        $inputs = $request->only(['name', 'email', 'website']);
+        Company::find($id)->update($inputs);
+        return redirect('/companies');
     }
 
     /**

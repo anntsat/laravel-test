@@ -15,6 +15,11 @@
                     @endif
 
                     You are logged in!
+                    <br>
+                    Want to create a company? :)
+                    <br>
+
+                    <a href="/companies/create"><input type="button" name="create" value="Create Company" class="btn btn-info" style="float: right"></a>
                 </div>
             </div>
         </div>
